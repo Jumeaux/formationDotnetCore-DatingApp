@@ -26,8 +26,8 @@ namespace Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<AppUser>> GetOneUser(int id) => await _context.Users.FindAsync(id);
 
-        [AllowAnonymous]
         // api/users
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<AppUser>>> AllUser()=> await _context.Users.ToListAsync();
     }
