@@ -10,7 +10,6 @@ using Microsoft.EntityFrameworkCore;
 namespace Controllers
 {
 
-   
     public class UsersController:BaseApicontroller
     {
         private DataContext _context;
