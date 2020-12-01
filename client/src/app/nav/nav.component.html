@@ -2,18 +2,27 @@
     <div class="container">
         <a class="navbar-brand" href="#">DatingApp</a>
 
-        <ul class="navbar-nav mr-auto">
+        <ul class="navbar-nav mr-auto"  *ngIf="accountService.currentUser$ | async">
             <li class="nav-item">
-                <a class="nav-link" href="#">Home </a>
+                <a class="nav-link" href="#">Matchs </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Link</a>
+                <a class="nav-link" href="#">List</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link " href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+                <a class="nav-link " href="#">Message</a>
             </li>
         </ul>
-        <form  #formLogin="ngForm" class="form-inline mt-2 mt-md-0" (ngSubmit)="login()" autocomplete="off">
+
+        <div class="dropdown" *ngIf="accountService.currentUser$ | async" dropdown>
+            <a class="dropdown-toggle  text-light" dropdownToggle>Wellcome user </a>
+            <div class="dropdown-menu" *dropdownMenu>
+                <div class="dropdown-item">Edit Profil</div>
+                <div class="dropdown-item" (click)="logOut()">LogOut</div>
+            </div>
+        </div>
+
+        <form *ngIf="(accountService.currentUser$ | async) == null" #formLogin="ngForm" class="form-inline mt-2 mt-md-0" (ngSubmit)="login()" autocomplete="off">
             <input 
             name="username"
             [(ngModel)]="model.username"
