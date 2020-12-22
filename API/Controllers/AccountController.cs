@@ -10,7 +10,7 @@ using API.Interfaces;
 
 namespace API.Controllers
 {
-    public class AccountController : BaseApicontroller
+    public  class AccountController : BaseApicontroller
     {
         private readonly DataContext _context;
         private readonly ITokenService _tokenService;
