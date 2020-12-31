@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using API.Controllers;
@@ -25,32 +26,28 @@ namespace Controllers
         }
 
 
-        // api/users
-        [HttpGet("{id}")]
-        public async Task<ActionResult<MemberDto>> GetUser(int id) {
-
-            var user=await _repo.GetUserByIdAsync(id);
-            var userToReturn = _mapper.Map<MemberDto>(user);
-            return userToReturn;
-             
-        }
-            
-
-
-        [HttpGet("{username}")]
-        public async Task<ActionResult<MemberDto>> GetByUsernamne(string username) 
-        {
-            return await  _repo.GetMemberAsync(username);
-           
-        } 
-
-        // api/users
+         // api/users
         [HttpGet] 
         public async Task<ActionResult<IEnumerable<MemberDto>>> AllUser(){
 
            var users=  await _repo.GetMembersAsync();
            return Ok(users);
         }  
+
+  
+
+        // api/users/username
+       [HttpGet("{username}")]
+        public async Task<ActionResult<MemberDto>> GetByUsernamne(string username) 
+        {
+            Console.WriteLine("test");
+            return await  _repo.GetMemberAsync(username);
+
+        } 
+
+
+
+        
           
     }
 }
