@@ -16,7 +16,7 @@
             <div class="card">
                 <img src="{{member.photoUrl || './assets/user.png'}}" alt="{{member.username}}" class="card-img-top  img-thumbnail">
     
-                <div class="card-body">
+                 <div class="card-body">
                     <div>
                         <strong> Location</strong>
                         <p>{{member.city}}, {{member.country}}</p>
@@ -27,11 +27,11 @@
                     </div>
                     <div>
                         <strong> Last Active</strong>
-                        <p>{{member.lastActive}}</p>
+                        <p>{{member.lastActive | timeago}}</p>
                     </div>
                     <div>
                         <strong> Member Since</strong>
-                        <p>{{member.created}}</p>
+                        <p>{{member.created | date:'shortDate'}}</p>
                     </div>
                 </div>
                 <div class="card-footer">

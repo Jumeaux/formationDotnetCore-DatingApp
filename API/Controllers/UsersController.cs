@@ -16,6 +16,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
 using API.Extensions;
 using API.Entites;
+using API.Helpers;
 
 namespace Controllers
 {
@@ -36,10 +37,18 @@ namespace Controllers
 
         // api/users
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<MemberDto>>> AllUser()
+        public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers([FromQuery] UserParams userParams)
         {
 
-            var users = await _repo.GetMembersAsync();
+            var user = await _repo.GetUserByUsernameAsync(User.GetUsername());
+            userParams.CurrentUSername=user.UserName;
+
+            if(string.IsNullOrEmpty(userParams.Gender))
+                userParams.Gender = user.Gender == "male" ? "female" : "male";
+            
+            var users = await _repo.GetMembersAsync(userParams);
+
+            Response.AddPageHeader(users.CurrentPage, users.PageSize, users.TotalCount,users.TotalPages);
             return Ok(users);
         }
 
@@ -49,7 +58,7 @@ namespace Controllers
         [HttpGet("{username}",Name="GetUSer")]
         public async Task<ActionResult<MemberDto>> GetByUsernamne(string username)
         {
-            Console.WriteLine("test");
+
             return await _repo.GetMemberAsync(username);
         }
 
@@ -57,7 +66,7 @@ namespace Controllers
         public async Task<ActionResult> UpdateUser(MemberUpdateDto memberUpdateDto)
         {
          
-            var user = await _repo.GetUserByUsernameAsync(User.GetUserConnect());
+            var user = await _repo.GetUserByUsernameAsync(User.GetUsername());
             _mapper.Map(memberUpdateDto, user);
             _repo.UpdateUSer(user);
 
@@ -71,7 +80,7 @@ namespace Controllers
         public async Task<ActionResult<PhotoDto>> addPohto(IFormFile  file)
         {
 
-            var user = await _repo.GetUserByUsernameAsync(User.GetUserConnect());
+            var user = await _repo.GetUserByUsernameAsync(User.GetUsername());
 
             var result = await _photoService.AddPhotoAsync(file);
 
@@ -97,7 +106,7 @@ namespace Controllers
         [HttpPut("set-main-photo/{idPhoto}")]
         public async Task<ActionResult> SetMainPhoto(int idPhoto)
         {
-            var user= await _repo.GetUserByUsernameAsync(User.GetUserConnect());
+            var user= await _repo.GetUserByUsernameAsync(User.GetUsername());
             var photo=  user.Photos.FirstOrDefault(u=>u.Id == idPhoto);
 
             if (photo.isMain) return BadRequest("cette photo est dèjà la principal");
@@ -115,7 +124,7 @@ namespace Controllers
         [HttpDelete("delete-photo/{photoId}")]
         public async Task<ActionResult> DeletePhoto(int photoId)
         {
-            var user = await _repo.GetUserByUsernameAsync(User.GetUserConnect());
+            var user = await _repo.GetUserByUsernameAsync(User.GetUsername());
             var photo = user.Photos.FirstOrDefault(x=> x.Id ==photoId);
 
             if( photo == null) return NotFound(" photo not found");
