@@ -1,3 +1,4 @@
+using System;
 using System.Text;
 using System.Security.Cryptography;
 using System.Collections.Generic;
@@ -15,8 +16,9 @@ namespace API.Data
 
         public static async Task SeedUsers(DataContext context)
         {
+            Console.WriteLine("---------------------------------------");
             if (await context.Users.AnyAsync()) return;
-
+             Console.WriteLine("---------------------------------------");
             var userData = await System.IO.File.ReadAllTextAsync("Data/USerSeedData.json");
             var users = JsonSerializer.Deserialize<List<AppUser>>(userData);
 
