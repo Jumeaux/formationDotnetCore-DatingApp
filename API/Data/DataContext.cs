@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using System;
 using API.Entites;
 using Entites;
@@ -15,6 +16,7 @@ namespace Data
         public DbSet<AppUser> Users { get; set; }
 
         public DbSet<UserLike> Likes{ get; set;}
+        public DbSet<Message> Messages { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -35,6 +37,16 @@ namespace Data
                 .WithMany(l =>l.LikedByUsers)
                 .HasForeignKey(s => s.LikedUserId)
                 .OnDelete(DeleteBehavior.NoAction);
+
+            builder.Entity<Message>()
+                .HasOne(u =>u.Recipient)
+                .WithMany(m => m.MessageReceived)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Message>()
+                .HasOne(u =>u.Sender)
+                .WithMany(m => m.MessageSent)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

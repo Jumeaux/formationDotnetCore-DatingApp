@@ -11,6 +11,7 @@ import { HomeComponent } from './home/home.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { MemberDetailComponent } from './members/member-detail/member-detail.component';
+import { MemberDetailResolver } from './_resolvers/member-detail-resolver';
 
 const routes: Routes = [
 
@@ -22,7 +23,7 @@ const routes: Routes = [
     children:[
       {path:'members', component:MemberListComponent},
       {path:'member/edit', component:MemberEditComponent, canDeactivate:[PreventUnsavedChangesGuard]},
-      {path:'member/:username', component: MemberDetailComponent},
+      {path:'member/:username', component: MemberDetailComponent,resolve:{member:MemberDetailResolver}},
       {path:'lists', component: ListsComponent},
       {path:'messages', component: MessagesComponent}
     ]
