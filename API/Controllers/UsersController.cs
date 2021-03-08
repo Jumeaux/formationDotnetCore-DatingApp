@@ -1,18 +1,12 @@
 using System.Linq;
-using System.Security.Claims;
-using System.Reflection.Metadata;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using API.Controllers;
 using API.DTOs;
 using API.Interfaces;
 using AutoMapper;
-using Data;
-using Entites;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
 using API.Extensions;
 using API.Entites;
@@ -54,7 +48,7 @@ namespace Controllers
 
 
 
-        // api/users/username
+        
         [HttpGet("{username}",Name="GetUSer")]
         public async Task<ActionResult<MemberDto>> GetByUsernamne(string username)
         {

@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using API.DTOs;
 using API.Entites;
@@ -27,6 +28,7 @@ namespace API.Helpers
                 opt => opt.MapFrom(src =>src.Sender.Photos.FirstOrDefault(x =>x.isMain).Url))
                 .ForMember(dest =>dest.RecipientPhotoUrl, 
                 opt => opt.MapFrom(src =>src.Recipient.Photos.FirstOrDefault(x =>x.isMain).Url));
+            CreateMap<DateTime,DateTime>().ConvertUsing(d =>DateTime.SpecifyKind(d,DateTimeKind.Utc));
         }
     }
 }
