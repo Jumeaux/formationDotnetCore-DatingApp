@@ -29,11 +29,6 @@ namespace API.Data
             _context.Entry(AppUser).State= EntityState.Modified;
         }
 
-        public async Task<bool> SaveAllAsync()
-        {
-                return await _context.SaveChangesAsync() > 0;
-        }
-
         public async Task<IEnumerable<AppUser>> GetUSersAsync()
         {
                 return await  _context.Users
@@ -88,6 +83,11 @@ namespace API.Data
                 userParams.PageNumber, 
                 userParams.PageSize
             );
+        }
+
+        public  async Task<string> GetGender(string username)
+        {
+            return await _context.Users.Where(u =>u.UserName==username).Select(u =>u.Gender).FirstOrDefaultAsync();
         }
     }
 }

@@ -24,6 +24,6 @@ namespace API.Interfaces
         Task<IEnumerable<MessageDto>>  GetMessageThread(string currentUsername, string recipeientUsername);
 
         Task<Group> GetGroupForConnection(string connectionId);
-        Task<bool> SaveAllAsync();
+     
     }
 }
