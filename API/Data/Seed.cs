@@ -1,3 +1,4 @@
+using System.Linq;
 using System;
 using System.Text;
 using System.Security.Cryptography;
@@ -39,6 +40,7 @@ namespace API.Data
                 using var hmac = new HMACSHA512();
 
                 user.UserName = user.UserName.ToLower();
+                user.Photos.First().isApproved=true;
                 await userManager.CreateAsync(user,"Pa$$w@rd1");
                 await userManager.AddToRoleAsync(user, "Member");
                 

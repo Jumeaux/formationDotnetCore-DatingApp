@@ -52,8 +52,8 @@ namespace Controllers
         [HttpGet("{username}",Name="GetUSer")]
         public async Task<ActionResult<MemberDto>> GetByUsernamne(string username)
         {
-
-            return await _unitOfWork.UserRepository.GetMemberAsync(username);
+            var currentUsername= User.GetUsername();
+            return await _unitOfWork.UserRepository.GetMemberAsync(username, currentUser: currentUsername==username);
         }
 
         [HttpPut]
@@ -86,8 +86,7 @@ namespace Controllers
                  PublicId=result.PublicId
             };
 
-            if(user.Photos.Count == 0) photo.isMain=true;
-       
+            // if(user.Photos.Count == 0) photo.isMain=true;
             user.Photos.Add(photo);
 
             if (await _unitOfWork.Complete()) return  CreatedAtRoute("GetUser", new {username= user.UserName}, _mapper.Map<PhotoDto>(photo)) ;
