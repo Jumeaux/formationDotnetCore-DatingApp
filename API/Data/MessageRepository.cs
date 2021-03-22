@@ -42,7 +42,7 @@ namespace API.Data
 
         public async Task<Connection> GetConnection(string ConnectionId)
         {
-                return await _context.Connections.FindAsync(ConnectionId);
+            return await _context.Connections.FindAsync(ConnectionId);
         }
 
         public Task<Group> GetGroupForConnection(string connectionId)
@@ -69,7 +69,7 @@ namespace API.Data
             query = messageParams.Container switch
             {
                 "Inbox"=> query.Where(u => u.RecipientUsername== messageParams.Username && u.RecipientDeleted==false),
-                "Oubox"=> query.Where(u =>u.SenderUsername == messageParams.Username && u.SenderDeleted==false),
+                "Outbox"=> query.Where(u =>u.SenderUsername == messageParams.Username && u.SenderDeleted==false),
                 _=> query.Where(u =>u.RecipientUsername == messageParams.Username && u.DateRead== null && u.RecipientDeleted==false)
             };
 

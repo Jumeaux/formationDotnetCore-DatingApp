@@ -11,14 +11,13 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
 export class RoleModalComponent implements OnInit {
   
   @Input() public updateSelectedRoles = new EventEmitter<any>();
+  
   user:User;
   roles:any[];
 
   constructor( public bsModalRef:BsModalRef) { }
 
   ngOnInit(): void {
-
-    console.log(this.roles);
     
   }
 

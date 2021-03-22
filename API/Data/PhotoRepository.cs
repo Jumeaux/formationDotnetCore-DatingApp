@@ -24,7 +24,8 @@ namespace API.Data
         public async Task<Photo> GetPhotoById(int id)
         {
             return await _context.Photos
-            .IgnoreQueryFilters().FirstOrDefaultAsync(p =>p.Id==id);        }
+            .IgnoreQueryFilters().FirstOrDefaultAsync(p =>p.Id==id);        
+        }
 
         public async Task<IEnumerable<PhotoForApprovalDto>> GetUnapprovedPhotos()
         {
