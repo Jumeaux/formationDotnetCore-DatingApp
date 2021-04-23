@@ -62,19 +62,17 @@ namespace API.Data
 
         public async Task<PagedList<MessageDto>> GetMessageForUser(MessageParams messageParams)
         {
-            var query= _context.Messages.OrderByDescending(m => m.MessageSent)
-            .ProjectTo<MessageDto>(_mapper.ConfigurationProvider)
-            .AsQueryable();
+            var query= _context.Messages.OrderByDescending(m => m.MessageSent).AsQueryable();
 
             query = messageParams.Container switch
             {
-                "Inbox"=> query.Where(u => u.RecipientUsername== messageParams.Username && u.RecipientDeleted==false),
-                "Outbox"=> query.Where(u =>u.SenderUsername == messageParams.Username && u.SenderDeleted==false),
-                _=> query.Where(u =>u.RecipientUsername == messageParams.Username && u.DateRead== null && u.RecipientDeleted==false)
+                "Inbox"=> query.Where(u => u.RecipientUsername== messageParams.Username && u.RecipientDelete==false),
+                "Outbox"=> query.Where(u =>u.SenderUsername == messageParams.Username && u.SenderDelete==false),
+                _=> query.Where(u =>u.RecipientUsername == messageParams.Username && u.DateRead== null && u.RecipientDelete==false)
             };
 
 
-            return await PagedList<MessageDto>.CreateAsync(query,messageParams.PageNumber, messageParams.PageSize);
+            return await PagedList<MessageDto>.CreateAsync(query.ProjectTo<MessageDto>(_mapper.ConfigurationProvider),messageParams.PageNumber, messageParams.PageSize);
         }
 
         public  async Task<Group> GetMessageGroup(string groupName)

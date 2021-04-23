@@ -7,7 +7,7 @@ import {
   HttpInterceptor
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { delay, finalize } from 'rxjs/operators';
+import {finalize } from 'rxjs/operators';
 
 @Injectable()
 export class BusyInterceptor implements HttpInterceptor {
