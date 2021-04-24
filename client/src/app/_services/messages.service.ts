@@ -1,3 +1,4 @@
+import { BusyService } from './busy.service';
 import { take } from 'rxjs/operators';
 import { BehaviorSubject } from 'rxjs';
 import { User } from './../_models/user';
@@ -18,18 +19,21 @@ export class MessagesService {
   hubConnection : HubConnection;
   private messageThreadSource= new  BehaviorSubject<Message[]>([]);
   public messageThread$= this.messageThreadSource.asObservable();
-  constructor(private http:HttpClient) { }
+  constructor(private http:HttpClient, private busyService:BusyService) { }
 
 
   createHubConnection(user:User, otherUser:string)
-  {
+  { 
+    this.busyService.busy();
       this.hubConnection= new HubConnectionBuilder()
         .withUrl(HUBS_URL+'messages?user='+otherUser, {
           accessTokenFactory:()=>user.token
         }).withAutomaticReconnect().build();
         
         
-      this.hubConnection.start().catch(error=> console.log(error));
+      this.hubConnection.start()
+      .catch(error=> console.log(error))
+      .finally(()=>this.busyService.idle());
     
       this.hubConnection.on('ReceivedMessagesThread',messages=>{
           this.messageThreadSource.next(messages);
@@ -58,7 +62,12 @@ export class MessagesService {
 
   public stopHubConnection()
   {
-    if(this.hubConnection) this.hubConnection.stop();
+    if(this.hubConnection){
+
+      this.messageThreadSource.next([]);
+
+      this.hubConnection.stop();
+    } 
     
   }
 
